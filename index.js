@@ -72,6 +72,28 @@ app.put("/updateStatus", async (req, res) => {
   }
 });
 
+app.put("/updateUser", async (req, res) => {
+  try {
+    const id = req.query.userId;
+    const updatedData = req.body;
+
+    // Update user details with the given ID
+    const updatedUser = await AppointmentModel.findByIdAndUpdate(
+      id,
+      updatedData,
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.json(updatedUser);
+  } catch (error) {
+    console.error("Error updating user:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 
 app.delete ("/deleteUser", function(req, res, next){
   const id = req.query.userId
